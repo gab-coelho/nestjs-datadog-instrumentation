@@ -1,15 +1,13 @@
-# Comparação entre Datadog SSI e instrumentação manual em NestJS
+# Single Step Instrumentation vs SDK manual em aplicações NestJS
 
-Comparação do **Datadog Single Step Instrumentation (SSI)** com **instrumentação manual via SDK `dd-trace`** em uma aplicação NestJS rodando no Kubernetes.
-
-A ideia é usar a mesma aplicação em dois caminhos de instrumentação e comparar, lado a lado, preparação, implantação, configuração e cobertura de observabilidade.
+A ideia é usar a mesma aplicação em duas formas de instrumentação e comparar lado a lado a preparação, implantação, configuração e cobertura de observabilidade.
 
 ## Estrutura do repositório
 
 - `app/` — backend NestJS simples (sem nenhum código específico do Datadog), usado como base para ambas as variantes.
 - `manual-instrumentation/` — variante com `dd-trace` adicionado manualmente (código + Dockerfile + manifests Kubernetes).
-- `ssi-instrumentation/` — variante usando a mesma imagem base, instrumentada via Admission Controller do Datadog (annotations/labels, sem mudança de código).
-- `datadog/` — valores do Helm para instalar o Datadog Operator e manifest `DatadogAgent`.
+- `ssi-instrumentation/` — variante usando a mesma imagem base, instrumentada via Admission Controller.
+- `datadog/` — values para instalar o Datadog Operator e manifest `DatadogAgent`.
 - `load-testing/` — script k6 para gerar tráfego comparável nas duas variantes.
 - `docs/` — matriz de comparação, fluxo do teste e premissas/ressalvas.
 - `scripts/` — automação de cluster, build, deploy e limpeza do ambiente.
@@ -18,7 +16,7 @@ A ideia é usar a mesma aplicação em dois caminhos de instrumentação e compa
 
 - `kubectl`, `helm`, Docker, kind, Node.js 20+
 - `k6` para gerar carga local
-- Conta Datadog com API key e permissão para instalar o Agent (APM + Admission Controller habilitados)
+- Conta Datadog com API key e permissão para instalar o Agent
 
 ## Como rodar
 
@@ -65,5 +63,6 @@ Veja a matriz completa em [`docs/comparison-matrix.md`](docs/comparison-matrix.m
 
 ## Importante
 
-Este repositório é um laboratório de comparação controlada, não um guia de rollout para produção. 
-Decisões também devem considerar consistência entre serviços, política de mudança do Admission Controller e integração com o pipeline de CI/CD existente. Detalhes em [`docs/assumptions-and-caveats.md`](docs/assumptions-and-caveats.md).
+Este repositório é um laboratório de comparação, não um guia de rollout para produção. 
+Decisões também devem considerar consistência entre serviços, e integração com o pipeline de CI/CD existente.
+Mais detalhes em [`docs/assumptions-and-caveats.md`](docs/assumptions-and-caveats.md).
