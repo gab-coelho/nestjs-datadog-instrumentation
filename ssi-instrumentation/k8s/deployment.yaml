@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/part-of: datadog-instrumentation-lab
     tags.datadoghq.com/env: dev
     tags.datadoghq.com/service: nestjs-auto
-    tags.datadoghq.com/version: local
+    tags.datadoghq.com/version: "0.0.1"
 spec:
   replicas: 1
   selector:
@@ -21,7 +21,7 @@ spec:
         app.kubernetes.io/part-of: datadog-instrumentation-lab
         tags.datadoghq.com/env: dev
         tags.datadoghq.com/service: nestjs-auto
-        tags.datadoghq.com/version: local
+        tags.datadoghq.com/version: "0.0.1"
       annotations:
         admission.datadoghq.com/enabled: "true"
         admission.datadoghq.com/js-lib.version: latest
