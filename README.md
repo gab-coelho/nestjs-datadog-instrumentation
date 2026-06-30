@@ -61,6 +61,8 @@ Depois disso, compare os dois serviços no APM e preencha suas observações em 
 
 Passo a passo detalhado, incluindo como inspecionar o que o Admission Controller injeta nos pods e como simular falhas propositais de cada abordagem, está em [`docs/lab-flow.md`](docs/lab-flow.md).
 
+Para investigar os spans de middleware chamados `<anonymous>` no tracer JavaScript da Datadog, veja [`docs/js-anonymous-spans.md`](docs/js-anonymous-spans.md).
+
 ## Resultado esperado
 
 Ao final do laboratório você deve conseguir responder, com dados reais (não só documentação):

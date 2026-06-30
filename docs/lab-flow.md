@@ -17,6 +17,7 @@ Passos para reproduzir o laboratório com comandos prontos para copiar e executa
 8. Compare os resultados no Datadog:
    - confirme que os dois serviços aparecem no APM;
    - compare a completude dos traces: chamadas HTTP de saída foram capturadas? chamadas de banco aparecem? os flame graphs são equivalentes para a mesma requisição?
+   - se aparecerem spans `<anonymous>` na waterfall, use [`js-anonymous-spans.md`](js-anonymous-spans.md);
    - confira logs e valide se a correlação entre trace e log funciona em cada abordagem.
 9. Quebre algo de propósito:
    - remova o `-r tracer.js` do Dockerfile da variante manual, faça o redeploy e confirme se o tracing para silenciosamente sem erro no startup;
