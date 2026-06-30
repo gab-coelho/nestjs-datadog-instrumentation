@@ -34,10 +34,8 @@ spec:
             - configMapRef:
                 name: nestjs-manual-config
           env:
-            - name: DD_AGENT_HOST
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.hostIP
+            - name: DD_TRACE_AGENT_URL
+              value: http://datadog-agent.datadog.svc.cluster.local:8126
             - name: DD_ENV
               value: dev
             - name: DD_SERVICE

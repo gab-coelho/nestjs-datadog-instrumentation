@@ -1,1 +1,16 @@
+clusterName: gab-coelho-lab
+logLevel: "warn"
+
+introspection:
+  enabled: true
+
 installCRDs: true
+datadogCRDs:
+  crds:
+    datadogPodAutoscalers: false
+    datadogPodAutoscalerClusterProfiles: false
+    datadogMonitors: false
+    datadogSLOs: false
+
+clusterRole:
+  allowReadAllResources: true

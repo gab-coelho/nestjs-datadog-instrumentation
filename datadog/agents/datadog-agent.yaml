@@ -5,21 +5,22 @@ metadata:
   namespace: datadog
 spec:
   global:
-    site: datadoghq.com
+    clusterName: gab-coelho-lab
+    logLevel: WARN
+    kubelet:
+      tlsVerify: false
     credentials:
       apiSecret:
         secretName: datadog-secret
         keyName: api-key
+    tags:
+      - "env:dev"
+      - "repo:gab-coelho/nestjs-datadog-instrumentation"
   features:
     apm:
-      enabled: true
-      hostPortConfig:
-        enabled: true
       instrumentation:
         enabled: true
         enabledNamespaces:
           - nestjs-auto
         libVersions:
           js: latest
-    admissionController:
-      enabled: true
