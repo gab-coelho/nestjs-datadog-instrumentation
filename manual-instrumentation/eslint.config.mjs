@@ -8,7 +8,7 @@ export default tseslint.config(
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    files: ['tmp/manual-src/**/*.ts'],
+    files: ['app/src/**/*.ts', 'manual-instrumentation/tracer.ts'],
     languageOptions: {
       parserOptions: {
         project: './tsconfig.json',

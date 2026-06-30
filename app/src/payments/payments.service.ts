@@ -1,5 +1,6 @@
+import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
-import axios from 'axios';
+import { firstValueFrom } from 'rxjs';
 
 interface PaymentRequest {
   amount: number;
@@ -9,20 +10,25 @@ interface PaymentRequest {
 @Injectable()
 export class PaymentsService {
   private readonly log = new Logger(PaymentsService.name);
-  private readonly baseUrl = process.env.PAYMENTS_URL ?? 'https://httpbun.com';
+  private readonly baseUrl: string;
+
+  constructor(private readonly http: HttpService) {
+    this.baseUrl = this.http.axiosRef.defaults.baseURL ?? 'https://httpbun.com';
+  }
 
   async authorize(request: PaymentRequest) {
     const delay = request.slow ? 2 : 1;
 
     try {
-      await axios.get(`${this.baseUrl}/delay/${delay}`, {
-        timeout: 5000,
+      await firstValueFrom(this.http.get(`/delay/${delay}`, {
         headers: {
           'x-lab-payment-amount': String(request.amount),
         },
-      });
+      }));
     } catch (error) {
-      this.log.warn(`mock payment call failed: ${(error as Error).message}`);
+      // The lab intentionally continues when the mock provider fails, so order flow still produces traces.
+      const message = error instanceof Error ? error.message : String(error);
+      this.log.warn(`mock payment call failed: ${message}`);
     }
 
     return {

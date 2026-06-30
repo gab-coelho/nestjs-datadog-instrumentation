@@ -9,7 +9,7 @@
     "target": "ES2021",
     "sourceMap": true,
     "outDir": "./dist",
-    "rootDir": "./tmp/manual-src",
+    "rootDir": "..",
     "incremental": true,
     "strict": true,
     "skipLibCheck": true,
@@ -17,6 +17,6 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["tmp/manual-src/**/*.ts"],
+  "include": ["../app/src/**/*.ts", "tracer.ts"],
   "exclude": ["node_modules", "dist"]
 }

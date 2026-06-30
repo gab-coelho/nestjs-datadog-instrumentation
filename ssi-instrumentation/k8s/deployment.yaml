@@ -33,13 +33,9 @@ spec:
           ports:
             - name: http
               containerPort: 3000
-          env:
-            - name: NODE_ENV
-              value: production
-            - name: PORT
-              value: "3000"
-            - name: PAYMENTS_URL
-              value: https://httpbun.com
+          envFrom:
+            - configMapRef:
+                name: nestjs-auto-config
           resources:
             requests:
               cpu: 100m

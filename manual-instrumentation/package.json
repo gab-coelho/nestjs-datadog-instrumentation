@@ -3,18 +3,26 @@
   "version": "1.0.0",
   "private": true,
   "description": "Manual dd-trace variant for the Datadog instrumentation lab",
-  "main": "dist/main.js",
+  "main": "dist/app/src/main.js",
   "scripts": {
-    "build": "rm -rf tmp/manual-src dist && mkdir -p tmp/manual-src && cp -R ../app/src/. tmp/manual-src/ && cp tracer.ts tmp/manual-src/tracer.ts && tsc -p tsconfig.json",
-    "lint": "rm -rf tmp/manual-src && mkdir -p tmp/manual-src && cp -R ../app/src/. tmp/manual-src/ && cp tracer.ts tmp/manual-src/tracer.ts && eslint \"tmp/manual-src/**/*.ts\"",
-    "start": "node -r ./dist/tracer.js dist/main.js",
-    "start:dev": "node -r ts-node/register ./src/tracer.ts ./src/main.ts"
+    "build": "rm -rf dist && tsc -p tsconfig.json",
+    "lint": "cd .. && eslint --config manual-instrumentation/eslint.config.mjs \"app/src/**/*.ts\" \"manual-instrumentation/tracer.ts\"",
+    "start": "node -r ./dist/manual-instrumentation/tracer.js dist/app/src/main.js",
+    "start:dev": "node -r ts-node/register -r ./tracer.ts ../app/src/main.ts"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   },
   "dependencies": {
+    "@nestjs/axios": "^4.0.1",
     "@nestjs/common": "^11.1.27",
+    "@nestjs/config": "^4.0.4",
     "@nestjs/core": "^11.1.27",
     "@nestjs/platform-express": "^11.1.27",
+    "@nestjs/terminus": "^11.1.1",
     "axios": "^1.0.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.15.1",
     "dd-trace": "^5.0.0",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.0.0"

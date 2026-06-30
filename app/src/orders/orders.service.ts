@@ -1,5 +1,6 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PaymentsService } from '../payments/payments.service';
+import { CreateOrderDto } from './dto/create-order.dto';
 
 type OrderStatus = 'created' | 'paid';
 
@@ -7,17 +8,10 @@ export interface Order {
   id: string;
   item: string;
   quantity: number;
-  amount: number;
+  amount: number; // in BRL
   status: OrderStatus;
   paymentRef?: string;
   createdAt: string;
-}
-
-export interface CreateOrderBody {
-  item?: string;
-  quantity?: number;
-  amount?: number;
-  slowPayment?: boolean;
 }
 
 @Injectable()
@@ -71,23 +65,10 @@ export class OrdersService {
     return order;
   }
 
-  async create(body: CreateOrderBody) {
-    const item = body?.item?.trim();
-    const quantity = Number(body?.quantity ?? 1);
-    const amount = Number(body?.amount);
-
-    if (!item) {
-      throw new BadRequestException('item is required');
-    }
-
-    if (!Number.isFinite(quantity) || quantity < 1) {
-      throw new BadRequestException('quantity must be greater than zero');
-    }
-
-    if (!Number.isFinite(amount) || amount <= 0) {
-      throw new BadRequestException('amount must be greater than zero');
-    }
-
+  async create(body: CreateOrderDto) {
+    const item = body.item.trim();
+    const quantity = body.quantity ?? 1;
+    const amount = body.amount;
     const order: Order = {
       id: String(this.nextId++),
       item,

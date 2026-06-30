@@ -1,0 +1,14 @@
+.git
+.env*
+
+**/node_modules
+**/dist
+**/tmp
+**/*.tsbuildinfo
+
+**/logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*

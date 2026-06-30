@@ -48,6 +48,7 @@ deploy_manual() {
 deploy_auto() {
   ver="$(version)"
   kubectl apply -f ssi-instrumentation/k8s/namespace.yaml
+  kubectl apply -f ssi-instrumentation/k8s/configmap.yaml
   kubectl apply -f ssi-instrumentation/k8s/service.yaml
   kubectl apply -f ssi-instrumentation/k8s/deployment.yaml
   tag_deployment nestjs-auto nestjs-auto "$ver"

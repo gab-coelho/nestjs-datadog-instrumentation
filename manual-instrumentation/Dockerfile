@@ -7,7 +7,8 @@ FROM deps AS build
 COPY manual-instrumentation/tsconfig.json ./
 COPY app/src ../app/src
 COPY manual-instrumentation/tracer.ts ./tracer.ts
-RUN npm run build
+RUN ln -s ../manual-instrumentation/node_modules ../app/node_modules \
+  && npm run build
 
 FROM node:20-alpine AS prod-deps
 WORKDIR /workspace/manual-instrumentation
@@ -23,4 +24,4 @@ COPY --from=build /workspace/manual-instrumentation/dist ./dist
 COPY manual-instrumentation/package.json ./
 USER node
 EXPOSE 3000
-CMD ["node", "-r", "./dist/tracer.js", "dist/main.js"]
+CMD ["node", "-r", "./dist/manual-instrumentation/tracer.js", "dist/app/src/main.js"]
