@@ -1,0 +1,26 @@
+{
+  "name": "nestjs-dd-manual-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Manual dd-trace variant for the Datadog instrumentation lab",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "rm -rf ../tmp/manual-src dist && mkdir -p ../tmp/manual-src && cp -R ../app/src/. ../tmp/manual-src/ && cp tracer.ts ../tmp/manual-src/tracer.ts && tsc -p tsconfig.json",
+    "start": "node -r ./dist/tracer.js dist/main.js",
+    "start:dev": "node -r ts-node/register ./src/tracer.ts ./src/main.ts"
+  },
+  "dependencies": {
+    "@nestjs/common": "^10.0.0",
+    "@nestjs/core": "^10.0.0",
+    "@nestjs/platform-express": "^10.0.0",
+    "axios": "^1.0.0",
+    "dd-trace": "^5.0.0",
+    "reflect-metadata": "^0.2.0",
+    "rxjs": "^7.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.0.0"
+  }
+}

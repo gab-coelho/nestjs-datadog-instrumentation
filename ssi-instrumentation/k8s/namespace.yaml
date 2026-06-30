@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nestjs-auto
+  labels:
+    app.kubernetes.io/part-of: datadog-instrumentation-lab
+    # Alternative activation path for SSI:
+    # Keep the pod annotation in deployment.yaml for this lab, or remove it and
+    # uncomment the label below to enable injection for all eligible pods here.
+    # admission.datadoghq.com/enabled: "true"

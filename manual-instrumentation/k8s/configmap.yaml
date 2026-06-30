@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nestjs-manual-config
+  namespace: nestjs-manual
+data:
+  NODE_ENV: production
+  PORT: "3000"
+  PAYMENTS_URL: https://httpbun.com
