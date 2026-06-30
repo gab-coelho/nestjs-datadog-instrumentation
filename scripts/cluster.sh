@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+. scripts/env.sh
+load_env
+
 cluster="${KIND_CLUSTER_NAME:-dd-nest-lab}"
 registry="${KIND_REGISTRY_NAME:-kind-registry}"
 port="${KIND_REGISTRY_PORT:-5001}"

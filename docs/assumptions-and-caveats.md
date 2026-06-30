@@ -10,7 +10,7 @@ Ele não visa substituir uma avaliação de produção.
 - A variante manual deve conter `dd-trace` antes de qualquer módulo instrumentável da aplicação.
 - A variante SSI deve depender do Admission Controller do Datadog para injetar a biblioteca de auto-instrumentation.
 - O Datadog é instalado pelo Operator, e o Agent é configurado pelo manifest `datadog/agents/datadog-agent.yaml`.
-- `DD_API_KEY` não é versionada; o secret Kubernetes `datadog-secret` deve ser criado fora do repositório.
+- `DD_API_KEY` não é versionada; use `.env` ou crie o secret Kubernetes `datadog-secret` manualmente fora do repositório.
 - A comparação deve usar o mesmo ambiente Datadog, mesma janela de tempo e volume de tráfego semelhante.
 
 ## Ressalvas

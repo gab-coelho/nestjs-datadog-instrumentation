@@ -3,10 +3,8 @@
 Passos para reproduzir o laboratório com comandos prontos para copiar e executar.
 
 1. `scripts/cluster.sh` sobe um cluster local usando kind e um registry em `localhost:5001`.
-2. Crie o secret da API key fora do repositório:
-   - `kubectl create namespace datadog --dry-run=client -o yaml | kubectl apply -f -`
-   - `kubectl create secret generic datadog-secret --from-literal api-key="$DD_API_KEY" -n datadog`
-3. `scripts/datadog.sh` instala o Datadog Operator e aplica `datadog/agents/datadog-agent.yaml`, habilitando APM, Admission Controller e SSI.
+2. Crie um `.env` com `DD_API_KEY`, usando `.env.example` como base.
+3. `scripts/datadog.sh` cria/atualiza o Secret Kubernetes a partir do `.env`, instala o Datadog Operator e aplica `datadog/agents/datadog-agent.yaml`, habilitando APM, Admission Controller e SSI.
 4. `scripts/build.sh all` faz o build da imagem base (`app/Dockerfile.base`) e da imagem manual (`manual-instrumentation/Dockerfile`), enviando ambas para o registry local.
 5. Implante a variante com instrumentação manual:
    - `scripts/deploy.sh manual` aplica os manifests de `manual-instrumentation/k8s/*`;

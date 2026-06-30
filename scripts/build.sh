@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+. scripts/env.sh
+load_env
+
 usage() {
   echo "usage: $0 [base|manual|all]" >&2
 }

@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+. scripts/env.sh
+load_env
+
 ns="${DATADOG_NAMESPACE:-datadog}"
 
 need() {
@@ -14,17 +17,32 @@ need helm
 need kubectl
 
 cat <<'EOF'
-Datadog API key secret must be created outside this repo, for example:
+Datadog keys must stay outside Git. You can put them in local .env:
+  DD_API_KEY=...
+  DD_APP_KEY=... # optional for this lab
+
+Or create the Kubernetes secret manually:
   kubectl create namespace datadog --dry-run=client -o yaml | kubectl apply -f -
-  kubectl create secret generic datadog-secret \
-    --from-literal api-key="$DD_API_KEY" \
-    -n datadog
+  kubectl create secret generic datadog-secret --from-literal api-key="$DD_API_KEY" -n datadog
 EOF
 
 kubectl create namespace "$ns" --dry-run=client -o yaml | kubectl apply -f -
 
-if ! kubectl get secret datadog-secret -n "$ns" >/dev/null 2>&1; then
-  echo "missing secret '$ns/datadog-secret'; create it with your Datadog API key before installing" >&2
+if [ -n "${DD_API_KEY:-}" ]; then
+  if [ -n "${DD_APP_KEY:-}" ]; then
+    kubectl create secret generic datadog-secret \
+      --from-literal "api-key=${DD_API_KEY}" \
+      --from-literal "app-key=${DD_APP_KEY}" \
+      -n "$ns" \
+      --dry-run=client -o yaml | kubectl apply -f -
+  else
+    kubectl create secret generic datadog-secret \
+      --from-literal "api-key=${DD_API_KEY}" \
+      -n "$ns" \
+      --dry-run=client -o yaml | kubectl apply -f -
+  fi
+elif ! kubectl get secret datadog-secret -n "$ns" >/dev/null 2>&1; then
+  echo "missing '$ns/datadog-secret' and DD_API_KEY is not set in the environment or .env" >&2
   exit 1
 fi
 
