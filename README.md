@@ -18,6 +18,11 @@ A ideia é usar a mesma aplicação em duas formas de instrumentação e compara
 - `k6` para gerar carga local
 - Conta Datadog com API key e permissão para instalar o Agent
 
+Instale os binários necessários para rodar o lab usando:
+```bash
+./scripts/install.sh
+```
+
 ## Configuração local
 
 Crie um `.env` a partir do template e preencha sua API key.
