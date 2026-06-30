@@ -13,7 +13,7 @@ need() {
 }
 
 deploy_manual() {
-  kubectl create namespace nestjs-manual --dry-run=client -o yaml | kubectl apply -f -
+  kubectl apply -f manual-instrumentation/k8s/namespace.yaml
   kubectl apply -f manual-instrumentation/k8s/configmap.yaml
   kubectl apply -f manual-instrumentation/k8s/service.yaml
   kubectl apply -f manual-instrumentation/k8s/deployment.yaml
