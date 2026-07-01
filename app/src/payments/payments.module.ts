@@ -8,7 +8,7 @@ import { PaymentsService } from './payments.service';
     HttpModule.registerAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
-        baseURL: config.get<string>('PAYMENTS_URL') ?? 'https://httpbun.com',
+        baseURL: config.get<string>('PAYMENTS_URL'),
         timeout: 5000,
       }),
     }),
