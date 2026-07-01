@@ -14,8 +14,10 @@ Passos para reproduzir o laboratório com comandos prontos para copiar e executa
    - `scripts/deploy.sh auto` aplica os manifests de `ssi-instrumentation/k8s/*` com as annotations/labels necessárias;
    - use `kubectl describe pod` e compare com o spec original para ver o que o admission webhook injetou (init containers, volumes e variáveis de ambiente).
 7. `scripts/load.sh manual` e `scripts/load.sh auto` geram tráfego comparável nas duas apps.
+   - inclui uma pequena taxa de 5xx no fluxo de pagamento, controlada por `PAYMENTS_MOCK_5XX_RATE` e aplicada ao ConfigMap por `scripts/deploy.sh`, para validar o Error Tracking no Datadog.
 8. Compare os resultados no Datadog:
    - confirme que os dois serviços aparecem no APM;
+   - confirme que há uma baixa taxa de erros 5xx;
    - compare a completude dos traces: chamadas HTTP de saída foram capturadas? chamadas de banco aparecem? os flame graphs são equivalentes para a mesma requisição?
    - se aparecerem spans `<anonymous>` na waterfall, use [`js-anonymous-spans.md`](js-anonymous-spans.md);
    - confira logs e valide se a correlação entre trace e log funciona em cada abordagem.

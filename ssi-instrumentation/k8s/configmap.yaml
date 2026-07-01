@@ -7,3 +7,4 @@ data:
   NODE_ENV: production
   PORT: "3000"
   PAYMENTS_URL: https://httpbun.com
+  PAYMENTS_MOCK_5XX_RATE: "0.02"

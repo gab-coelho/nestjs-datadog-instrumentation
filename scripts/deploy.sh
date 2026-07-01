@@ -34,24 +34,39 @@ tag_deployment() {
     "{\"metadata\":{\"labels\":{\"tags.datadoghq.com/version\":\"${ver}\"}},\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"tags.datadoghq.com/version\":\"${ver}\"}}}}}"
 }
 
+apply_app_config() {
+  ns="$1"
+  name="$2"
+
+  kubectl create configmap "$name" -n "$ns" \
+    --from-literal=NODE_ENV="${NODE_ENV:-production}" \
+    --from-literal=PORT="${PORT:-3000}" \
+    --from-literal=PAYMENTS_URL="${PAYMENTS_URL:-https://httpbun.com}" \
+    --from-literal=PAYMENTS_MOCK_5XX_RATE="${PAYMENTS_MOCK_5XX_RATE:-0.02}" \
+    --dry-run=client \
+    -o yaml | kubectl apply -f -
+}
+
 deploy_manual() {
   ver="$(version)"
   kubectl apply -f manual-instrumentation/k8s/namespace.yaml
-  kubectl apply -f manual-instrumentation/k8s/configmap.yaml
+  apply_app_config nestjs-manual nestjs-manual-config
   kubectl apply -f manual-instrumentation/k8s/service.yaml
   kubectl apply -f manual-instrumentation/k8s/deployment.yaml
   tag_deployment nestjs-manual nestjs-manual "$ver"
   kubectl set env deployment/nestjs-manual -n nestjs-manual "DD_VERSION=${ver}"
+  kubectl rollout restart deployment/nestjs-manual -n nestjs-manual
   kubectl rollout status deployment/nestjs-manual -n nestjs-manual --timeout=180s
 }
 
 deploy_auto() {
   ver="$(version)"
   kubectl apply -f ssi-instrumentation/k8s/namespace.yaml
-  kubectl apply -f ssi-instrumentation/k8s/configmap.yaml
+  apply_app_config nestjs-auto nestjs-auto-config
   kubectl apply -f ssi-instrumentation/k8s/service.yaml
   kubectl apply -f ssi-instrumentation/k8s/deployment.yaml
   tag_deployment nestjs-auto nestjs-auto "$ver"
+  kubectl rollout restart deployment/nestjs-auto -n nestjs-auto
   kubectl rollout status deployment/nestjs-auto -n nestjs-auto --timeout=180s
 }
 
