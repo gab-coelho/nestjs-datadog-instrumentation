@@ -66,25 +66,21 @@ export class OrdersService {
   }
 
   async create(body: CreateOrderDto) {
-    const item = body.item.trim();
-    const quantity = body.quantity ?? 1;
-    const amount = body.amount;
+    const payment = await this.payments.authorize({
+      amount: body.amount,
+      slow: body.slowPayment,
+    });
+
     const order: Order = {
       id: String(this.nextId++),
-      item,
-      quantity,
-      amount,
-      status: 'created',
+      item: body.item,
+      quantity: body.quantity,
+      amount: body.amount,
+      status: 'paid',
+      paymentRef: payment.id,
       createdAt: new Date().toISOString(),
     };
 
-    const payment = await this.payments.authorize({
-      amount,
-      slow: Boolean(body?.slowPayment),
-    });
-
-    order.status = 'paid';
-    order.paymentRef = payment.id;
     this.orders.push(order);
 
     return order;

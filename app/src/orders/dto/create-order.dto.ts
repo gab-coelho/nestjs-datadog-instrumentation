@@ -1,24 +1,24 @@
-import { Transform, TransformFnParams, Type } from 'class-transformer';
-import { IsBoolean, IsInt, IsNotEmpty, IsNumber, IsString, Min, ValidateIf } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
+import { IsBoolean, IsInt, IsNotEmpty, IsNumber, IsString, Min } from 'class-validator';
 
 export class CreateOrderDto {
-  @Transform(({ value }: TransformFnParams) => (typeof value === 'string' ? value.trim() : value))
+  @Transform(({ value }) => (typeof value === 'string' ? value.trim() : value))
   @IsString()
   @IsNotEmpty()
   item!: string;
 
-  @ValidateIf((_object: unknown, value: unknown) => value !== undefined)
+  @Transform(({ value }) => (value === undefined ? 1 : value))
   @Type(() => Number)
   @IsInt()
   @Min(1)
-  quantity?: number;
+  quantity = 1;
 
   @Type(() => Number)
   @IsNumber({ maxDecimalPlaces: 2 })
   @Min(0.01)
   amount!: number;
 
-  @ValidateIf((_object: unknown, value: unknown) => value !== undefined)
+  @Transform(({ value }) => (value === undefined ? false : value))
   @IsBoolean()
-  slowPayment?: boolean;
+  slowPayment = false;
 }
